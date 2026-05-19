@@ -1,6 +1,7 @@
 import { useState } from "react"
 import api from "../services/api"
 import { useNavigate } from "react-router-dom"
+import toast from "react-hot-toast"
 
 function Register() {
     const navigate = useNavigate()
@@ -23,12 +24,12 @@ function Register() {
 
         try {
             await api.post('/users', formData)
-            alert('Usuário cadastrado com sucesso')
+            toast.success('Usuário cadastrado com sucesso')
             navigate('/')
 
         } catch (error) {
             console.error(error)
-            alert('Erro ao cadastrar usuário')
+            toast.error('Erro ao cadastrar usuário')
         }
     }
 

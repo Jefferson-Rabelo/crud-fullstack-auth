@@ -4,12 +4,14 @@ import Login from '../pages/Login'
 import Register from '../pages/Register'
 import Dashboard from '../pages/Dashboard'
 import ProtectedRoute from './ProtectedRoute'
+import ModalTest from '../components/Modal'
 
 function AppRoutes() {
     return (
         <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/ModalTest" element={<ModalTest />} />
 
             <Route path="/dashboard"
                 element={

@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import api from '../services/api'
 import { useNavigate } from 'react-router-dom'
+import toast from 'react-hot-toast'
 
 function Login() {
+
     const navigate = useNavigate()
 
     const [formData, setFormData] = useState({
@@ -25,14 +27,14 @@ function Login() {
 
             localStorage.setItem('token', response.data.token)
 
-            alert('Login realizado com sucesso')
+            toast.success('Login realizado com sucesso')
 
             navigate('/dashboard')
 
         } catch (error) {
             console.error(error)
 
-            alert('Erro ao fazer login')
+            toast.error('Erro ao fazer login')
         }
     }
 
@@ -81,7 +83,9 @@ function Login() {
 
                 </form>
             </div>
+
         </div>
+
     )
 }
 
