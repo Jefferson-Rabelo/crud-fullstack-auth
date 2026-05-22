@@ -5,35 +5,49 @@ const { userSchema } = require('../validation/userValidation')
 
 //Criar usuário
 exports.createUsers = async (req, res) => {
+
     const validation = userSchema.safeParse(req.body)
 
     if (!validation.success) {
-        return res.status(404).json({
+        return res.status(400).json({
             error: validation.error.errors
         })
     }
+
     const { nome, email, senha } = validation.data
 
     try {
+
         const hashedPassword = await bcrypt.hash(senha, 10)
 
-        const sql = 'SELECT id, nome, email FROM users'
-
-        console.log(typeof db.query)
+        const sql = `
+            INSERT INTO users (nome, email, senha)
+            VALUES (?, ?, ?)
+        `
 
         db.query(sql, [nome, email, hashedPassword], (err, result) => {
+
             if (err) {
                 console.error(err)
-                return res.status(500).json({ error: 'Erro ao criar usuário' })
+
+                return res.status(500).json({
+                    error: 'Erro ao criar usuário'
+                })
             }
+
             res.status(201).json({
                 mensagem: 'Usuário criado com sucesso',
                 userId: result.insertId
             })
         })
+
     } catch (error) {
-        console.log(error)
-        res.status(500).json({ error: 'Erro ao criptografar senha' })
+
+        console.error(error)
+
+        res.status(500).json({
+            error: 'Erro ao criptografar senha'
+        })
     }
 }
 //listar usuarios

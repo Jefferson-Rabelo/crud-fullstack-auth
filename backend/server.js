@@ -6,9 +6,10 @@ const userRoutes = require('./src/routes/userRoutes');
 const app = express();//CRIA O SERVIDOR
 
 app.use(cors({
-    // URL DO FRONTEND DA VERCEL
-    origin: ['crud-fullstack-auth-git-main-jefferson-rabelos-projects.vercel.app',
-        'crud-fullstack-auth-2og9ssqgg-jefferson-rabelos-projects.vercel.app'],
+    origin: [
+        'https://crud-fullstack-auth-git-main-jefferson-rabelos-projects.vercel.app',
+        'https://crud-fullstack-auth-2og9ssqgg-jefferson-rabelos-projects.vercel.app'
+    ],
     credentials: true
 }));//permite acesso externo (Front-end React)
 app.use(express.json());//Permite que a API receba JSON no corpo das requisições
