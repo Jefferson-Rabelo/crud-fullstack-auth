@@ -1,7 +1,8 @@
 import axios from 'axios'
 
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL
+    //URL DO BACKEND DO RENDER
+    baseURL: 'https://crud-fullstack-auth.onrender.com'
 })
 
 api.interceptors.request.use(

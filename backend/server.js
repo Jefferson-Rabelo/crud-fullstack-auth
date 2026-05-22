@@ -6,7 +6,8 @@ const userRoutes = require('./src/routes/userRoutes');
 const app = express();//CRIA O SERVIDOR
 
 app.use(cors({
-    origin: 'https://crud-fullstack-auth.vercel.app'
+    // URL DO FRONTEND DA VERCEL
+    origin: 'https://crud-fullstack-auth.vercel.app/'
 }));//permite acesso externo (Front-end React)
 app.use(express.json());//Permite que a API receba JSON no corpo das requisições
 app.use('/api', userRoutes);
