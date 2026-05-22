@@ -5,7 +5,9 @@ const cors = require('cors');//Ele permite que um domínio diferente acesse sua 
 const userRoutes = require('./src/routes/userRoutes');
 const app = express();//CRIA O SERVIDOR
 
-app.use(cors());//permite acesso externo (Front-end React)
+app.use(cors({
+    origin: 'https://crud-fullstack-auth.vercel.app'
+}));//permite acesso externo (Front-end React)
 app.use(express.json());//Permite que a API receba JSON no corpo das requisições
 app.use('/api', userRoutes);
 // Rota de teste para verificar se a API está funcionando

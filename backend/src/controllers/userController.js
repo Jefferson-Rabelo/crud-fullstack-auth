@@ -17,7 +17,9 @@ exports.createUsers = async (req, res) => {
     try {
         const hashedPassword = await bcrypt.hash(senha, 10)
 
-        const sql = 'INSERT INTO users (nome, email, senha) VALUES (?, ?, ?)'
+        const sql = 'SELECT id, nome, email FROM users'
+
+        console.log(typeof db.query)
 
         db.query(sql, [nome, email, hashedPassword], (err, result) => {
             if (err) {
@@ -30,13 +32,13 @@ exports.createUsers = async (req, res) => {
             })
         })
     } catch (error) {
-        console.error(err)
+        console.log(error)
         res.status(500).json({ error: 'Erro ao criptografar senha' })
     }
 }
 //listar usuarios
 exports.getUsers = (req, res) => {
-    const sql = 'SELECT id, nome, email, created_at FROM users'
+    const sql = 'SELECT id, nome, email FROM users'
 
     db.query(sql, (err, results) => {
         if (err) {
@@ -52,7 +54,7 @@ exports.getUsers = (req, res) => {
 exports.getUserById = (req, res) => {
     const { id } = req.params
 
-    const sql = 'SELECT id, nome, email, created_at FROM users WHERE id = ?'
+    const sql = 'SELECT id, nome, email FROM users WHERE id = ?'
 
     db.query(sql, [id], (err, results) => {
         if (err) {
