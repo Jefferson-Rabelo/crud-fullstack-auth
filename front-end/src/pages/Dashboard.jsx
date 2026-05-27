@@ -59,8 +59,14 @@ function Dashboard() {
 
         try {
 
-            await api.delete(`/users/${selectedUserId}`)
+            //await api.delete(`/users/${selectedUserId}`)
+            const token = localStorage.getItem('token')
 
+            await api.delete(`/users/${selectedUserId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
             setModalOpen(false)
 
             setSelectedUserId(null)
@@ -95,8 +101,18 @@ function Dashboard() {
 
         try {
 
-            await api.put(`/users/${editingUser}`, formData)
+            //await api.put(`/users/${editingUser}`, formData)
+            const token = localStorage.getItem('token')
 
+            await api.put(
+                `/users/${editingUser}`,
+                formData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            )
             toast.success('Usuário atualizado com sucesso!')
 
             setEditingUser(null)
