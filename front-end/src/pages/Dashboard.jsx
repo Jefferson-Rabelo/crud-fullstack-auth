@@ -20,6 +20,8 @@ function Dashboard() {
 
     const [deleteLoading, setDeleteLoading] = useState(false)
 
+    const [search, setSearch] = useState('')
+
     const [formData, setFormData] = useState({
         nome: '',
         email: ''
@@ -146,6 +148,12 @@ function Dashboard() {
         }
     }
 
+    const filteredUsers = users.filter((user) => {
+        return (
+            user.nome.toLowerCase().includes(search.toLowerCase()) ||
+            user.email.toLowerCase().includes(search.toLowerCase())
+        )
+    })
     return (
 
         <div className="min-h-screen bg-gray-100">
@@ -203,6 +211,17 @@ function Dashboard() {
                         </p>
                     </div>
                 </div>
+                <div className='mb-6'>
+                    <input
+                        type='text'
+                        placeholder='Buscar usuário...'
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        className='w-full bg-white md:w-80 border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500'
+
+                    />
+                </div>
+
 
                 {/*TABELA*/}
                 {loading ? (
@@ -232,7 +251,7 @@ function Dashboard() {
                             </thead>
 
                             <tbody>
-                                {users.map((user) => (
+                                {filteredUsers.map((user) => (
                                     <tr
                                         key={user.id}
                                         className='border-t hover:bg-gray-50 transition'>
@@ -279,11 +298,11 @@ function Dashboard() {
 
             <Modal
                 aberto={modalOpen}
-                fachar={() => {
+                fechar={() => {
                     setModalOpen(false)
                     setSelectedUserId(null)
                 }}
-                confirm={handleDelete}
+                confirmar={handleDelete}
                 titulo="Excluir usuário"
                 mensagem="Deseja realmente excluir este usuário?"
                 textoBotaoConfirmar={
@@ -293,7 +312,7 @@ function Dashboard() {
 
             <Modal
                 aberto={logoutModalOpen}
-                fechar={() => setLogoutModalOpen(true)}
+                fechar={() => setLogoutModalOpen(false)}
                 confirmar={handleLogout}
                 titulo="Sair da conta"
                 mensagem="Deseja realmente sair da conta?"
