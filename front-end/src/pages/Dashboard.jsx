@@ -16,6 +16,10 @@ function Dashboard() {
 
     const [selectedUserId, setSelectedUserId] = useState(null)
 
+    const [loading, setLoading] = useState(false)
+
+    const [deleteLoading, setDeleteLoading] = useState(false)
+
     const [formData, setFormData] = useState({
         nome: '',
         email: ''
@@ -27,6 +31,8 @@ function Dashboard() {
 
     const fetchUsers = async () => {
 
+        setLoading(true)
+
         try {
 
             const token = localStorage.getItem('token')
@@ -37,6 +43,7 @@ function Dashboard() {
                 }
             })
 
+
             setUsers(response.data)
 
         } catch (error) {
@@ -44,6 +51,9 @@ function Dashboard() {
             console.error(error)
 
             toast.error('Erro ao buscar usuário')
+
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -56,6 +66,8 @@ function Dashboard() {
     }
 
     const handleDelete = async () => {
+
+        setDeleteLoading(true)
 
         try {
 
@@ -84,6 +96,8 @@ function Dashboard() {
             console.error(error)
 
             toast.error('Erro ao deletar usuário')
+        } finally {
+            setDeleteLoading(false)
         }
     }
 
@@ -134,163 +148,159 @@ function Dashboard() {
 
     return (
 
-        <div className="min-h-screen bg-gray-100 p-8">
+        <div className="min-h-screen bg-gray-100">
 
-            <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow">
+            {/*HEADER*/}
+            <header className='bg-white shadow-sm border-b'>
+                <div className='max-w-7xl mx-auto px-6 py-4 flex items-center justify-between'>
 
-                <h1 className="text-3xl font-bold mb-6">
-                    Dashboard
-                </h1>
+                    <div>
+                        <h1 className='text-3xl font-bold text-gray-800'>
+                            Dashboard</h1>
 
-                <button
-                    onClick={() => setLogoutModalOpen(true)}
-                    className="bg-red-500 text-white px-4 py-2 rounded mb-4"
-                >
-                    Sair
-                </button>
-
-                {editingUser && (
-
-                    <div className="mb-6 bg-gray-100 p-4 rounded">
-
-                        <h2 className="text-xl font-bold mb-4">
-                            Editar Usuário
-                        </h2>
-
-                        <input
-                            type="text"
-                            placeholder="Nome"
-                            value={formData.nome}
-                            onChange={(e) =>
-                                setFormData({
-                                    ...formData,
-                                    nome: e.target.value
-                                })
-                            }
-                            className="border p-2 w-full mb-3 rounded"
-                        />
-
-                        <input
-                            type="email"
-                            placeholder="Email"
-                            value={formData.email}
-                            onChange={(e) =>
-                                setFormData({
-                                    ...formData,
-                                    email: e.target.value
-                                })
-                            }
-                            className="border p-2 w-full mb-3 rounded"
-                        />
+                        <p className='text-gray-500'>
+                            Gerencie os usuarios do sistema</p>
 
                         <button
-                            onClick={handleUpdate}
-                            className="bg-blue-500 text-white px-4 py-2 rounded"
+                            onClick={() => setLogoutModalOpen(true)}
+                            className='bg-red-500 hover:bg-red-600 transition text-white px-5 py-2 rounded-lg font-medium'
                         >
-                            Salvar Alterações
+                            Sair
                         </button>
+                    </div>
+                </div>
+            </header>
+            {/*CONTEÚDO*/}
+            <main className='max-w-7xl mx-auto p-6'>
+
+                {/*CARDS*/}
+                <div className='grid grid-cols-1 md:grid-cols-3 gap-6 mb-8'>
+
+                    <div className='bg-white p-6 rounded-2xl shadow-sm border'>
+                        <h2 className='text-gray-500 text-sm'>
+                            Total de Usuários
+                        </h2>
+                        <p className='text-4xl font-bold text-blue-600 mt-2'>
+                            {users.length}
+                        </p>
+                    </div>
+
+                    <div className='bg-white p-6 rounded-2xl shadow-sm border'>
+                        <h2 className='text-gray-500 text-sm'>
+                            Sistema
+                        </h2>
+
+                        <p className='text-2xl font-bold text-green-600 mt-2'>Online</p>
+                    </div>
+
+                    <div className='bg-white p-6 rounded-2xl shadow-sm border'>
+                        <h2 className='text-gray-500 text-sm'>
+                            Ambiente
+                        </h2>
+
+                        <p className='text-2xl font-bold text-purple-600 mt-2'>
+                            Produção
+                        </p>
+                    </div>
+                </div>
+
+                {/*TABELA*/}
+                {loading ? (
+                    <div className='bg-white rounded-2xl shadow-sm border p-10 text-center'>
+                        <div className='w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4">'></div>
+                        <p className='text-gray-500 text-lg'>
+                            Carregando usuários...
+                        </p>
+                    </div>
+
+                ) : (
+                    <div className='bg-white rounded-2xl shadow-sm border overflow-hidden'>
+                        <div className='p-6 border-b'>
+                            <h2 className='text-xl font-bold text-gray-800'>
+                                Usuários cadastrados
+                            </h2>
+                        </div>
+
+                        <table className='w-full'>
+                            <thead className='bg-gray-50'>
+                                <tr>
+                                    <th className='text-left p-4 font-semibold text-gray-600'>ID</th>
+                                    <th className='text-left p-4 font-semibold text-gray-600'>Nome</th>
+                                    <th className='text-left p-4 font-semibold text-gray-600'>Email</th>
+                                    <th className='text-left p-4 font-semibold text-gray-600'>Opções</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {users.map((user) => (
+                                    <tr
+                                        key={user.id}
+                                        className='border-t hover:bg-gray-50 transition'>
+                                        <td className='p-4'>
+                                            {user.id}
+                                        </td>
+
+                                        <td className='p-4 font-medium text-gray-800'>
+                                            {user.nome}
+                                        </td>
+
+                                        <td className='p-4 text-gray-600'>
+                                            {user.email}
+                                        </td>
+
+                                        <td className='p-4 flex gap-3'>
+                                            <button
+                                                onClick={() => handleEdit(user)}
+                                                className='bg-yellow-500 hover:bg-yellow-600 transition text-white px-4 py-2 rounded-lg'
+                                            >
+                                                Editar
+                                            </button>
+
+                                            <button
+                                                onClick={() => {
+                                                    setSelectedUserId(user.id)
+                                                    setModalOpen(true)
+                                                }}
+                                                className='bg-red-500 hover:bg-red-600 transition text-white px-4 py-2 rounded-lg'>
+                                                Excluir
+                                            </button>
+
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+
+                        </table>
 
                     </div>
-                )}
+                )
+                }
+            </main >
 
-                <table className="w-full border-collapse">
+            <Modal
+                aberto={modalOpen}
+                fachar={() => {
+                    setModalOpen(false)
+                    setSelectedUserId(null)
+                }}
+                confirm={handleDelete}
+                titulo="Excluir usuário"
+                mensagem="Deseja realmente excluir este usuário?"
+                textoBotaoConfirmar={
+                    deleteLoading ? 'Excluindo...' : 'Excluir'
+                }
+            />
 
-                    <thead>
+            <Modal
+                aberto={logoutModalOpen}
+                fechar={() => setLogoutModalOpen(true)}
+                confirmar={handleLogout}
+                titulo="Sair da conta"
+                mensagem="Deseja realmente sair da conta?"
+                textoBotaoConfirmar='Sair'
+            />
 
-                        <tr className="bg-gray-200">
-
-                            <th className="p-3 text-left">
-                                ID
-                            </th>
-
-                            <th className="p-3 text-left">
-                                Nome
-                            </th>
-
-                            <th className="p-3 text-left">
-                                Email
-                            </th>
-
-                            <th className="p-3 text-left">
-                                Ações
-                            </th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                        {users.map((user) => (
-
-                            <tr
-                                key={user.id}
-                                className="border-b"
-                            >
-
-                                <td className="p-3">
-                                    {user.id}
-                                </td>
-
-                                <td className="p-3">
-                                    {user.nome}
-                                </td>
-
-                                <td className="p-3">
-                                    {user.email}
-                                </td>
-
-                                <td className="p-3 flex gap-2">
-
-                                    <button
-                                        onClick={() => handleEdit(user)}
-                                        className="bg-yellow-500 text-white px-3 py-1 rounded"
-                                    >
-                                        Editar
-                                    </button>
-
-                                    <button
-                                        onClick={() => {
-                                            setSelectedUserId(user.id)
-                                            setModalOpen(true)
-                                        }}
-                                        className="bg-red-500 text-white px-3 py-1 rounded"
-                                    >
-                                        Excluir
-                                    </button>
-
-                                </td>
-
-                            </tr>
-
-                        ))}
-
-                    </tbody>
-
-                </table>
-
-                <Modal
-                    aberto={modalOpen}
-                    fechar={() => {
-                        setModalOpen(false)
-                        setSelectedUserId(null)
-                    }}
-                    confirmar={handleDelete}
-                    titulo="Excluir usuário"
-                    mensagem="Deseja realmente excluir este usuário?"
-                    textoBotaoConfirmar="Excluir"
-                />
-                <Modal
-                    aberto={logoutModalOpen}
-                    fechar={() => setLogoutModalOpen(false)}
-                    confirmar={handleLogout}
-                    titulo="Sair da conta"
-                    mensagem="Deseja realmente sair da conta?"
-                    textoBotaoConfirmar="Sair"
-                />
-            </div>
-
-        </div>
+        </div >
     )
 }
 
