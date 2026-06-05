@@ -295,56 +295,58 @@ function Dashboard() {
                             </h2>
                         </div>
 
-                        <table className='w-full'>
-                            <thead className='bg-gray-50'>
-                                <tr>
-                                    <th className='text-left p-4 font-semibold text-gray-600'>ID</th>
-                                    <th className='text-left p-4 font-semibold text-gray-600'>Nome</th>
-                                    <th className='text-left p-4 font-semibold text-gray-600'>Email</th>
-                                    <th className='text-left p-4 font-semibold text-gray-600'>Opções</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                {filteredUsers.map((user) => (
-                                    <tr
-                                        key={user.id}
-                                        className='border-t hover:bg-gray-50 transition'>
-                                        <td className='p-4'>
-                                            {user.id}
-                                        </td>
-
-                                        <td className='p-4 font-medium text-gray-800'>
-                                            {user.nome}
-                                        </td>
-
-                                        <td className='p-4 text-gray-600'>
-                                            {user.email}
-                                        </td>
-
-                                        <td className='p-4 flex gap-3'>
-                                            <button
-                                                onClick={() => handleEdit(user)}
-                                                className='bg-yellow-500 hover:bg-yellow-600 transition text-white px-4 py-2 rounded-lg'
-                                            >
-                                                Editar
-                                            </button>
-
-                                            <button
-                                                onClick={() => {
-                                                    setSelectedUserId(user.id)
-                                                    setModalOpen(true)
-                                                }}
-                                                className='bg-red-500 hover:bg-red-600 transition text-white px-4 py-2 rounded-lg'>
-                                                Excluir
-                                            </button>
-
-                                        </td>
+                        <div className='overflow-x-auto'>
+                            <table className='w-full min-w-[700px]'>
+                                <thead className='bg-gray-50'>
+                                    <tr>
+                                        <th className='text-left p-4 font-semibold text-gray-600'>ID</th>
+                                        <th className='text-left p-4 font-semibold text-gray-600'>Nome</th>
+                                        <th className='text-left p-4 font-semibold text-gray-600'>Email</th>
+                                        <th className='text-left p-4 font-semibold text-gray-600'>Opções</th>
                                     </tr>
-                                ))}
-                            </tbody>
+                                </thead>
 
-                        </table>
+                                <tbody>
+                                    {filteredUsers.map((user) => (
+                                        <tr
+                                            key={user.id}
+                                            className='border-t hover:bg-gray-50 transition'>
+                                            <td className='p-4'>
+                                                {user.id}
+                                            </td>
+
+                                            <td className='p-4 font-medium text-gray-800'>
+                                                {user.nome}
+                                            </td>
+
+                                            <td className='p-4 text-gray-600'>
+                                                {user.email}
+                                            </td>
+
+                                            <td className='p-4 flex gap-3'>
+                                                <button
+                                                    onClick={() => handleEdit(user)}
+                                                    className='bg-yellow-500 hover:bg-yellow-600 transition text-white px-4 py-2 rounded-lg'
+                                                >
+                                                    Editar
+                                                </button>
+
+                                                <button
+                                                    onClick={() => {
+                                                        setSelectedUserId(user.id)
+                                                        setModalOpen(true)
+                                                    }}
+                                                    className='bg-red-500 hover:bg-red-600 transition text-white px-4 py-2 rounded-lg'>
+                                                    Excluir
+                                                </button>
+
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+
+                            </table>
+                        </div>
 
                     </div>
                 )
