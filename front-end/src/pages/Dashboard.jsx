@@ -1,8 +1,12 @@
 import { useEffect, useState } from 'react'
 import api from '../services/api'
 import Modal from '../components/Modal'
+import { FaUsers } from 'react-icons/fa'
+import { FaServer } from 'react-icons/fa'
+import { FaRocket } from 'react-icons/fa'
 
 import toast from 'react-hot-toast'
+
 
 function Dashboard() {
 
@@ -104,6 +108,7 @@ function Dashboard() {
     }
 
     const handleEdit = (user) => {
+        console.log('Usuário clicado:', user)
 
         setEditingUser(user.id)
 
@@ -154,6 +159,8 @@ function Dashboard() {
             user.email.toLowerCase().includes(search.toLowerCase())
         )
     })
+
+    console.log('editingUser:', editingUser)
     return (
 
         <div className="min-h-screen bg-gray-100">
@@ -185,31 +192,80 @@ function Dashboard() {
                 <div className='grid grid-cols-1 md:grid-cols-3 gap-6 mb-8'>
 
                     <div className='bg-white p-6 rounded-2xl shadow-sm border'>
-                        <h2 className='text-gray-500 text-sm'>
-                            Total de Usuários
-                        </h2>
-                        <p className='text-4xl font-bold text-blue-600 mt-2'>
-                            {users.length}
-                        </p>
+
+                        <div className='flex justify-between items-center'>
+
+                            <div>
+
+                                <h2 className='text-gray-500 text-sm'>
+                                    Total de Usuários
+                                </h2>
+
+                                <p className='text-4xl font-bold text-blue-600 mt-2'>
+                                    {users.length}
+                                </p>
+
+                            </div>
+
+                            <FaUsers
+                                size={40}
+                                className='text-blue-500'
+                            />
+
+                        </div>
+
                     </div>
 
                     <div className='bg-white p-6 rounded-2xl shadow-sm border'>
-                        <h2 className='text-gray-500 text-sm'>
-                            Sistema
-                        </h2>
 
-                        <p className='text-2xl font-bold text-green-600 mt-2'>Online</p>
+                        <div className='flex justify-between items-center'>
+
+                            <div>
+
+                                <h2 className='text-gray-500 text-sm'>
+                                    Sistema
+                                </h2>
+
+                                <p className='text-2xl font-bold text-green-600 mt-2'>
+                                    Online
+                                </p>
+
+                            </div>
+
+                            <FaServer
+                                size={40}
+                                className='text-green-500'
+                            />
+
+                        </div>
+
                     </div>
 
                     <div className='bg-white p-6 rounded-2xl shadow-sm border'>
-                        <h2 className='text-gray-500 text-sm'>
-                            Ambiente
-                        </h2>
 
-                        <p className='text-2xl font-bold text-purple-600 mt-2'>
-                            Produção
-                        </p>
+                        <div className='flex justify-between items-center'>
+
+                            <div>
+
+                                <h2 className='text-gray-500 text-sm'>
+                                    Ambiente
+                                </h2>
+
+                                <p className='text-2xl font-bold text-purple-600 mt-2'>
+                                    Produção
+                                </p>
+
+                            </div>
+
+                            <FaRocket
+                                size={40}
+                                className='text-purple-500'
+                            />
+
+                        </div>
+
                     </div>
+
                 </div>
                 <div className='mb-6'>
                     <input
@@ -221,7 +277,6 @@ function Dashboard() {
 
                     />
                 </div>
-
 
                 {/*TABELA*/}
                 {loading ? (
@@ -318,6 +373,65 @@ function Dashboard() {
                 mensagem="Deseja realmente sair da conta?"
                 textoBotaoConfirmar='Sair'
             />
+
+            <Modal
+                aberto={editingUser}
+
+                titulo="Editar Usuário"
+            >
+                <div className='space-y-4'>
+                    <label className='block text-sm font-medium text-gray-600 mb-2'
+                    >Nome</label>
+                    <input
+                        type='text'
+                        placeholder='Nome'
+                        value={formData.nome}
+                        onChange={(e) =>
+                            setFormData({
+                                ...formData,
+                                nome: e.target.value
+                            })
+                        }
+                        className='w-full border border-gray-300 rounded-xl px-4 py-2'
+                    />
+                    <label className='block text-sm font-medium text-gray-600 mb-2'
+                    >Email</label>
+                    <input
+                        type='email'
+                        placeholder='Email'
+                        value={formData.email}
+                        onChange={(e) => {
+                            setFormData({
+                                ...formData,
+                                email: e.target.value
+                            })
+                        }}
+                        className='w-full border border-gray-300 rounded-xl px-4 py-2'
+                    />
+                    <div className='flex justify-center gap-3 pt-2'>
+
+                        <button
+                            onClick={() => {
+                                setEditingUser(null)
+                                setFormData({
+                                    nome: '',
+                                    email: ''
+                                })
+                            }}
+                            className='px-4 py-2 rounded-xl bg-gray-200 hover:bg-gray-300'
+                        >
+                            Cancelar
+                        </button>
+
+                        <button
+                            onClick={handleUpdate}
+                            className='px-4 py-2 rounded-xl bg-blue-500 hover:bg-blue-600 text-white'
+                        >Salvar Alteração</button>
+                    </div>
+
+                </div>
+
+            </Modal >
 
         </div >
     )

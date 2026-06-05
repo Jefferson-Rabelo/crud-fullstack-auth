@@ -6,6 +6,7 @@ function Modal({
     confirmar,
     titulo,
     mensagem,
+    children,
     textoBotaoConfirmar = 'Confirmar',
     textoBotaoCancelar = 'Cancelar'
 }) {
@@ -16,15 +17,18 @@ function Modal({
 
         <div className="fixed inset-0 bg-black/40  flex items-center justify-center z-50 px-4">
 
-            <div className="bg-white w-full max-w-sm rounded-2xl shadow-2xl p-6 animate-fadeIn">
+            <div className="bg-white w-full max-w-lg rounded-2xl shadow-2xl p-6 animate-fadeIn">
 
                 <h2 className="text-2xl font-bold text-gray-800 mb-3">
                     {titulo}
                 </h2>
 
-                <p className="text-gray-500 text-sm leading-relaxed mb-6">
-                    {mensagem}
-                </p>
+                {mensagem && (
+                    <p className="text-gray-500 text-sm leading-relaxed mb-6">
+                        {mensagem}
+                    </p>
+                )}
+                {children}
 
                 <div className="flex justify-end gap-3">
 
