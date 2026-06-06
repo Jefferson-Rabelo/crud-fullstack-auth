@@ -12,13 +12,5 @@ const pool = mysql.createPool({
     queueLimit: 0
 })
 
-/*pool = ((err) => {
-
-    if (err) {
-        console.log('Erro ao conectar no banco', err)
-    } else {
-        console.log('Pool MySQL conectado')
-    }
-})*/
 console.log('Pool MySQL conectado')
 module.exports = pool

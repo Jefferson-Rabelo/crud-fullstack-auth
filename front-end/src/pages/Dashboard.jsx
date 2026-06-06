@@ -184,7 +184,6 @@ function Dashboard() {
         )
     })
 
-    console.log('editingUser:', editingUser)
     return (
 
         <div className="min-h-screen bg-gray-100">
@@ -197,10 +196,6 @@ function Dashboard() {
                         <h1 className='text-3xl font-bold text-gray-800'>
                             Dashboard</h1>
 
-                        <p className='text-blue-600 font-medium mt-1'>
-                            Olá, {profile?.nome} 👋
-                        </p>
-
                         <p className='text-gray-500'>
                             Gerencie os usuarios do sistema</p>
 
@@ -211,6 +206,23 @@ function Dashboard() {
                             Sair
                         </button>
                     </div>
+
+                    <div className='flex items-center gap-4'>
+                        <div className='w-14 h-14 rounded-full bg-blue-600 text-white flex items-center justify-center text-xl font-bold shadow'>
+                            {profile?.nome?.charAt(0).toUpperCase()}
+                        </div>
+                        <div>
+                            <p className='font-semibold text-gray-800'>
+                                {profile?.nome}
+                            </p>
+                            <p className='text-sm text-gray-500'>
+                                {profile?.email}
+                            </p>
+
+                        </div>
+                    </div>
+
+
                 </div>
             </header>
             {/*CONTEÚDO*/}
