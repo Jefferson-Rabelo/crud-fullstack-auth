@@ -12,6 +12,8 @@ function Dashboard() {
 
     const [users, setUsers] = useState([])
 
+    const [profile, setProfile] = useState(null)
+
     const [editingUser, setEditingUser] = useState(null)
 
     const [modalOpen, setModalOpen] = useState(false)
@@ -31,9 +33,6 @@ function Dashboard() {
         email: ''
     })
 
-    useEffect(() => {
-        fetchUsers()
-    }, [])
 
     const fetchUsers = async () => {
 
@@ -62,6 +61,31 @@ function Dashboard() {
             setLoading(false)
         }
     }
+
+    const fetchProfile = async () => {
+        try {
+            const token = localStorage.getItem('token')
+
+            const response = await api.get('/me', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            setProfile(response.data)
+
+        } catch (error) {
+            console.error(error)
+
+            toast.error('Erro ao carregar perfil')
+        }
+    }
+
+    useEffect(() => {
+        fetchUsers()
+
+        fetchProfile()
+    }, [])
+
 
     const handleLogout = () => {
 
@@ -172,6 +196,10 @@ function Dashboard() {
                     <div>
                         <h1 className='text-3xl font-bold text-gray-800'>
                             Dashboard</h1>
+
+                        <p className='text-blue-600 font-medium mt-1'>
+                            Olá, {profile?.nome} 👋
+                        </p>
 
                         <p className='text-gray-500'>
                             Gerencie os usuarios do sistema</p>
