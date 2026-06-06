@@ -150,7 +150,7 @@ exports.deleteUser = (req, res) => {
         res.status(200).json({ mensagem: 'Usuário deletado com sucesso' })
     })
 }
-
+//login do usuário
 exports.login = (req, res) => {
     const { email, senha } = req.body
 
@@ -182,5 +182,30 @@ exports.login = (req, res) => {
             message: 'Login realizado com sucesso!',
             token
         })
+    })
+}
+
+exports.getMe = (req, res) => {
+
+    const sql =
+        `
+            SELECT id, nome, email
+            FROM users
+            WHERE id = ?
+            `
+    db.query(sql, [req.user.id], (err, results) => {
+        if (err) {
+            console.error(err)
+
+            return res.status(500).json({
+                message: 'Erro ao buscar usuário'
+            })
+        }
+        if (results.length === 0) {
+            return res.status(404).json({
+                message: 'Usuário não encontrado'
+            })
+        }
+        res.status(200).json(results[0])
     })
 }

@@ -10,5 +10,6 @@ router.get('/users/:id', authMiddleware, userController.getUserById)
 router.put('/users/:id', authMiddleware, userController.updateUser)
 router.delete('/users/:id', authMiddleware, userController.deleteUser)
 router.post('/login', userController.login)
+router.get('/me', authMiddleware, userController.getMe)
 
 module.exports = router
