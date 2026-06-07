@@ -13,6 +13,7 @@ function Dashboard() {
     const [users, setUsers] = useState([])
 
     const [profile, setProfile] = useState(null)
+    console.log('PROFILE:', profile)
 
     const [editingUser, setEditingUser] = useState(null)
 
@@ -218,6 +219,9 @@ function Dashboard() {
                             <p className='text-sm text-gray-500'>
                                 {profile?.email}
                             </p>
+                            <p className='text-sm text-gray-500'
+                            >Perfil: {profile?.role}
+                            </p>
 
                         </div>
                     </div>
@@ -371,14 +375,17 @@ function Dashboard() {
                                                     Editar
                                                 </button>
 
-                                                <button
-                                                    onClick={() => {
-                                                        setSelectedUserId(user.id)
-                                                        setModalOpen(true)
-                                                    }}
-                                                    className='bg-red-500 hover:bg-red-600 transition text-white px-4 py-2 rounded-lg'>
-                                                    Excluir
-                                                </button>
+                                                {profile?.role === 'admin' && (
+                                                    <button
+                                                        onClick={() => {
+                                                            setSelectedUserId(user.id)
+                                                            setModalOpen(true)
+                                                        }}
+                                                        className='bg-red-500 hover:bg-red-600 transition text-white px-4 py-2 rounded-lg'
+                                                    >
+                                                        Excluir
+                                                    </button>
+                                                )}
 
                                             </td>
                                         </tr>

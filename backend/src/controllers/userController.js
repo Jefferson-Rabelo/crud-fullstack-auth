@@ -193,7 +193,7 @@ exports.getMe = (req, res) => {
 
     const sql =
         `
-            SELECT id, nome, email
+            SELECT id, nome, email, role
             FROM users
             WHERE id = ?
             `
