@@ -13,7 +13,6 @@ function Dashboard() {
     const [users, setUsers] = useState([])
 
     const [profile, setProfile] = useState(null)
-    console.log('PROFILE:', profile)
 
     const [editingUser, setEditingUser] = useState(null)
 
@@ -191,7 +190,7 @@ function Dashboard() {
 
             {/*HEADER*/}
             <header className='bg-white shadow-sm border-b'>
-                <div className='max-w-7xl mx-auto px-6 py-4 flex items-center justify-between'>
+                <div className='max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-6'>
 
                     <div>
                         <h1 className='text-3xl font-bold text-gray-800'>
@@ -202,13 +201,12 @@ function Dashboard() {
 
                         <button
                             onClick={() => setLogoutModalOpen(true)}
-                            className='bg-red-500 hover:bg-red-600 transition text-white px-5 py-2 rounded-lg font-medium'
+                            className='mt-3 md:mt-4 bg-red-500 hover:bg-red-600 transition text-white px-5 py-2 rounded-lg font-medium w-fit'
                         >
                             Sair
                         </button>
                     </div>
-
-                    <div className='flex items-center gap-4'>
+                    <div className='bg-gray-50 border rounded-2xl p-4 flex items-center gap-4'>
                         <div className='w-14 h-14 rounded-full bg-blue-600 text-white flex items-center justify-center text-xl font-bold shadow'>
                             {profile?.nome?.charAt(0).toUpperCase()}
                         </div>
@@ -219,9 +217,20 @@ function Dashboard() {
                             <p className='text-sm text-gray-500'>
                                 {profile?.email}
                             </p>
-                            <p className='text-sm text-gray-500'
-                            >Perfil: {profile?.role}
-                            </p>
+                            <span className='inline-block
+                                mt-2
+                                px-3
+                                py-1
+                                bg-blue-100
+                                text-blue-700
+                                text-xs
+                                font-medium
+                                rounded-full'
+                            >
+                                {profile?.role === 'admin'
+                                    ? 'Administrador'
+                                    : 'Usuário'}
+                            </span>
 
                         </div>
                     </div>
@@ -322,82 +331,136 @@ function Dashboard() {
                     />
                 </div>
 
-                {/*TABELA*/}
-                {loading ? (
-                    <div className='bg-white rounded-2xl shadow-sm border p-10 text-center'>
-                        <div className='w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4">'></div>
-                        <p className='text-gray-500 text-lg'>
-                            Carregando usuários...
-                        </p>
-                    </div>
+                <div className='hidden md:block'>
 
-                ) : (
-                    <div className='bg-white rounded-2xl shadow-sm border overflow-hidden'>
-                        <div className='p-6 border-b'>
-                            <h2 className='text-xl font-bold text-gray-800'>
-                                Usuários cadastrados
-                            </h2>
+                    {/*TABELA*/}
+                    {loading ? (
+                        <div className='bg-white rounded-2xl shadow-sm border p-10 text-center'>
+                            <div className='w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4">'></div>
+                            <p className='text-gray-500 text-lg'>
+                                Carregando usuários...
+                            </p>
                         </div>
 
-                        <div className='overflow-x-auto'>
-                            <table className='w-full min-w-[700px]'>
-                                <thead className='bg-gray-50'>
-                                    <tr>
-                                        <th className='text-left p-4 font-semibold text-gray-600'>ID</th>
-                                        <th className='text-left p-4 font-semibold text-gray-600'>Nome</th>
-                                        <th className='text-left p-4 font-semibold text-gray-600'>Email</th>
-                                        <th className='text-left p-4 font-semibold text-gray-600'>Opções</th>
-                                    </tr>
-                                </thead>
+                    ) : (
+                        <div className='bg-white rounded-2xl shadow-sm border overflow-hidden'>
+                            <div className='p-6 border-b'>
+                                <h2 className='text-xl font-bold text-gray-800'>
+                                    Usuários cadastrados
+                                </h2>
+                            </div>
 
-                                <tbody>
-                                    {filteredUsers.map((user) => (
-                                        <tr
-                                            key={user.id}
-                                            className='border-t hover:bg-gray-50 transition'>
-                                            <td className='p-4'>
-                                                {user.id}
-                                            </td>
-
-                                            <td className='p-4 font-medium text-gray-800'>
-                                                {user.nome}
-                                            </td>
-
-                                            <td className='p-4 text-gray-600'>
-                                                {user.email}
-                                            </td>
-
-                                            <td className='p-4 flex gap-3'>
-                                                <button
-                                                    onClick={() => handleEdit(user)}
-                                                    className='bg-yellow-500 hover:bg-yellow-600 transition text-white px-4 py-2 rounded-lg'
-                                                >
-                                                    Editar
-                                                </button>
-
-                                                {profile?.role === 'admin' && (
-                                                    <button
-                                                        onClick={() => {
-                                                            setSelectedUserId(user.id)
-                                                            setModalOpen(true)
-                                                        }}
-                                                        className='bg-red-500 hover:bg-red-600 transition text-white px-4 py-2 rounded-lg'
-                                                    >
-                                                        Excluir
-                                                    </button>
-                                                )}
-
-                                            </td>
+                            <div className='overflow-x-auto'>
+                                <table className='w-full min-w-[700px]'>
+                                    <thead className='bg-gray-50'>
+                                        <tr>
+                                            <th className='text-left p-4 font-semibold text-gray-600'>ID</th>
+                                            <th className='text-left p-4 font-semibold text-gray-600'>Nome</th>
+                                            <th className='text-left p-4 font-semibold text-gray-600'>Email</th>
+                                            <th className='text-left p-4 font-semibold text-gray-600'>Opções</th>
                                         </tr>
-                                    ))}
-                                </tbody>
+                                    </thead>
 
-                            </table>
+                                    <tbody>
+                                        {filteredUsers.map((user) => (
+                                            <tr
+                                                key={user.id}
+                                                className='border-t hover:bg-gray-50 transition'>
+                                                <td className='p-4'>
+                                                    {user.id}
+                                                </td>
+
+                                                <td className='p-4 font-medium text-gray-800'>
+                                                    {user.nome}
+                                                </td>
+
+                                                <td className='p-4 text-gray-600'>
+                                                    {user.email}
+                                                </td>
+
+                                                <td className='p-4 flex gap-3'>
+                                                    <button
+                                                        onClick={() => handleEdit(user)}
+                                                        className='bg-yellow-500 hover:bg-yellow-600 transition text-white px-4 py-2 rounded-lg'
+                                                    >
+                                                        Editar
+                                                    </button>
+
+                                                    {profile?.role === 'admin' && (
+                                                        <button
+                                                            onClick={() => {
+                                                                setSelectedUserId(user.id)
+                                                                setModalOpen(true)
+                                                            }}
+                                                            className='bg-red-500 hover:bg-red-600 transition text-white px-4 py-2 rounded-lg'
+                                                        >
+                                                            Excluir
+                                                        </button>
+                                                    )}
+
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+
+                                </table>
+                            </div>
+
                         </div>
 
-                    </div>
-                )
-                }
+                    )
+                    }
+                </div>
+                {/*Fechamento da tabela*/}
+
+                {/*Tabela Mobile*/}
+
+                <div className='md:hidden space-y-4'>
+                    {filteredUsers.map((user) => (
+                        <div
+                            key={user.id}
+                            className='bg-white p-4 rounded-xl shadow border'
+                        >
+                            <h3 className='font-bold text-lg text-gray-800'
+                            >
+                                {user.nome}
+                            </h3>
+
+                            <p className='text-gray-600'
+                            >
+                                {user.email}
+                            </p>
+                            <p className='text-sm text-gray-400 mt-1'
+                            >
+                                ID: {user.id}
+                            </p>
+
+                            <div className='flex gap-2 mt-4'>
+                                <button
+                                    onClick={() => handleEdit(user)}
+                                    className='flex-1 bg-yellow-500 text-white py-2 rounded-lg'
+                                >Editar
+                                </button>
+
+
+
+                                {profile?.role === 'admin' && (
+                                    <button
+                                        onClick={() => {
+                                            setSelectedUserId(user.id)
+                                            setModalOpen(true)
+                                        }}
+                                        className='flex-1 bg-red-500 text-white py-2 rounded-lg'
+                                    >
+                                        Excluir
+                                    </button>
+                                )}
+                            </div>
+
+                        </div>
+                    ))}
+                </div>
+
             </main >
 
             <Modal
