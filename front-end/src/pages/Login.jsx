@@ -39,8 +39,36 @@ function Login() {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
+
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 via-indigo-700 to-purple-800">
             <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+
+                <div className="text-center mb-2">
+
+                    <div className="
+        w-5
+        h-5
+        mx-auto
+        rounded-2xl
+        flex
+        items-center
+        justify-center
+        text-3xl
+        font-bold
+        mb-2
+    ">
+                    </div>
+
+                    <h1 className="text-4xl font-bold">
+                        Software
+                    </h1>
+
+                    <p className="mt-2">
+                        Gerencie usuários com segurança
+                    </p>
+
+                </div>
+
                 <h1 className="text-3xl font-bold text-center mb-6">
                     Login
                 </h1>
